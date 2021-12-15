@@ -1,13 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors
+// ignore_for_file: use_key_in_widget_constructors, must_be_immutable, non_constant_identifier_names, prefer_const_constructors
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/constants.dart';
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
 import 'package:shop_app/screens/product.dart';
-import 'package:shop_app/screens/shopping.dart';
 
 class BrandsScreen extends StatelessWidget {
-
   List BrandsName = [
     'adidas',
     'Samsung',
@@ -30,7 +28,7 @@ class BrandsScreen extends StatelessWidget {
         ),
         leading: IconButton(
           onPressed: () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => BottomNavigationScreen(),
@@ -98,7 +96,7 @@ class BrandsScreen extends StatelessWidget {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(context,
+            Navigator.push(context,
                 MaterialPageRoute(builder: (context) => ProductScreen()));
           },
           child: Container(

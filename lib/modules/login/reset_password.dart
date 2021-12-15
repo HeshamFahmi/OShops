@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_returning_null_for_void
+// ignore_for_file: avoid_returning_null_for_void, prefer_const_constructors_in_immutables, use_key_in_widget_constructors, no_logic_in_create_state, prefer_final_fields, prefer_const_constructors, deprecated_member_use, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -38,7 +38,7 @@ class _ResetPasswordState extends State<ResetPassword> {
         leading: IconButton(
           onPressed: () {
             //Navigator.pop(context);
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (BuildContext context) => LoginScreen(token),

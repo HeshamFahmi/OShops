@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, must_be_immutable
+// ignore_for_file: prefer_const_constructors, avoid_print, must_be_immutable, deprecated_member_use
 import 'package:buildcondition/buildcondition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +10,7 @@ import 'package:shop_app/modules/login/cubit/states.dart';
 import 'package:shop_app/modules/login/reset_password.dart';
 import 'package:shop_app/modules/signup/sign_up_form.dart';
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
-import 'package:shop_app/screens/products/bottom_nav.dart';
-import 'package:shop_app/screens/shopping.dart';
+
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -146,40 +145,13 @@ class LoginScreen extends StatelessWidget {
                             padding: const EdgeInsets.all(15.0),
                             child: Column(
                               children: [
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Welcome,',
-                                      style: TextStyle(
-                                          fontSize: 30,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Spacer(),
-                                    TextButton(
-                                      child: Text(
-                                        'SignUp',
-                                        style: TextStyle(
-                                            color: Colors.blue, fontSize: 17),
-                                      ),
-                                      onPressed: () {
-                                        Navigator.pushReplacement(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                SignUpScreen(token),
-                                          ),
-                                        );
-                                      },
-                                    )
-                                  ],
-                                ),
                                 Align(
                                     alignment: Alignment.bottomLeft,
-                                    child: Text(
-                                      'Sign in to continue',
-                                      style: TextStyle(color: Colors.grey),
-                                    )),
+                                    child: Text('Login to continue',
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 20,
+                                        ))),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -246,7 +218,7 @@ class LoginScreen extends StatelessWidget {
                                   alignment: Alignment.bottomRight,
                                   child: TextButton(
                                     onPressed: () {
-                                      Navigator.pushReplacement(
+                                      Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (BuildContext context) =>
@@ -289,6 +261,28 @@ class LoginScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(
                                     color: signup_bg,
                                   )),
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Don't Have An Account ?"),
+                                    TextButton(
+                                      child: Text(
+                                        'Register',
+                                        style: TextStyle(
+                                            color: Colors.blue, fontSize: 17),
+                                      ),
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                SignUpScreen(token),
+                                          ),
+                                        );
+                                      },
+                                    )
+                                  ],
                                 ),
                               ],
                             ),

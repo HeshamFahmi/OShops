@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_returning_null_for_void
+// ignore_for_file: avoid_returning_null_for_void, prefer_final_fields, prefer_const_constructors, deprecated_member_use, non_constant_identifier_names, avoid_print, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -46,7 +46,7 @@ class _EditProfileState extends State<EditProfile> {
                     alignment: Alignment.bottomLeft,
                     child: IconButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => BottomNavigationScreen(),

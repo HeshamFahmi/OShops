@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, non_constant_identifier_names
+
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:shop_app/constants/strings.dart';
 import 'package:http/http.dart' as http;
-import 'package:shop_app/models/data_model.dart';
-import 'package:shop_app/models/items_model.dart';
+
 part 'api_Services_states.dart';
 
 class ApiServicesCubit extends Cubit<ApiServicesStates> {

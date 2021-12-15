@@ -1,9 +1,7 @@
-// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, deprecated_member_use, avoid_print
+// ignore_for_file: non_constant_identifier_names, prefer_const_constructors, deprecated_member_use, avoid_print, unused_local_variable
 
 import 'dart:convert';
 
-import 'package:carousel_slider/carousel_options.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -49,13 +47,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List CaImages = [
-      'assets/images/11.png',
-      'assets/images/22.png',
-      'assets/images/33.png',
-      'assets/images/44.png',
-    ];
-
     Widget buildColumn(BuildContext context, screen, url, name, price) {
       return Container(
         margin: EdgeInsets.all(10.0),
@@ -181,7 +172,7 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                             children: <Widget>[
                               FlatButton(
                                 onPressed: () {
-                                  Navigator.pushReplacement(
+                                  Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => CategoriesScreen(
@@ -221,25 +212,6 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                   const SizedBox(
                     height: 25,
                   ),
-                  // CarouselSlider(
-                  //   options: CarouselOptions(
-                  //     height: 150,
-                  //     initialPage: 0,
-                  //     enlargeCenterPage: true,
-                  //     autoPlay: true,
-                  //     autoPlayInterval: const Duration(seconds: 3),
-                  //   ),
-                  //   items: CaImages.map((imageURL) {
-                  //     return Container(
-                  //       width: double.infinity,
-                  //       margin: EdgeInsets.symmetric(horizontal: 10),
-                  //       child: Image.asset(
-                  //         imageURL,
-                  //         fit: BoxFit.fill,
-                  //       ),
-                  //     );
-                  //   }).toList(),
-                  // ),
                   const SizedBox(
                     height: 25,
                   ),
@@ -280,18 +252,22 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
                                 return buildColumn(
                                     context,
                                     ProductDetailsScreen(
-                                        productName: productModel!
-                                            .allProducts![index].productName
-                                            .toString(),
-                                        productImageUrl: productModel!
-                                            .allProducts![index].productImageURL
-                                            .toString(),
-                                        productPrice: productModel!
-                                            .allProducts![index].price
-                                            .toString(),
-                                        productRate: productModel!
-                                            .allProducts![index].rate
-                                            .toString()),
+                                      productName: productModel!
+                                          .allProducts![index].productName
+                                          .toString(),
+                                      productImageUrl: productModel!
+                                          .allProducts![index].productImageURL
+                                          .toString(),
+                                      productPrice: productModel!
+                                          .allProducts![index].price
+                                          .toString(),
+                                      productRate: productModel!
+                                          .allProducts![index].rate
+                                          .toString(),
+                                      productId: productModel!
+                                          .allProducts![index].sId
+                                          .toString(),
+                                    ),
                                     productModel!
                                         .allProducts![index].productImageURL
                                         .toString(),

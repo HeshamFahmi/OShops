@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new, unnecessary_this
+
 class Data {
   String? sId;
   String? productName;
@@ -36,7 +38,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data['_id'] = this.sId;
     data['productName'] = this.productName;
     data['productImageURL'] = this.productImageURL;

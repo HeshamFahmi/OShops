@@ -1,22 +1,26 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, unnecessary_string_interpolations, avoid_print
+
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/models/constants.dart';
 import 'package:shop_app/screens/card.dart';
-
-import 'bottom_navigator_bar.dart';
+import 'package:http/http.dart' as http;
+import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final String productName;
   final String productImageUrl;
   final String productPrice;
   final String productRate;
+  final String productId;
   const ProductDetailsScreen(
       {Key? key,
       required this.productName,
       required this.productImageUrl,
       required this.productPrice,
-      required this.productRate})
+      required this.productRate,
+      required this.productId})
       : super(key: key);
 
   @override
@@ -52,13 +56,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           child: IconButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
-                                // Navigator.pushReplacement(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //     builder: (BuildContext context) =>
-                                //         BottomNavigationScreen(),
-                                //   ),
-                                // );
                               },
                               icon: const Icon(Icons.arrow_back_ios))),
                     ),
@@ -76,48 +73,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ),
           const SizedBox(
             height: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 50),
-            child: Row(
-              children: [
-                Row(
-                  children: const [
-                    Text(
-                      'Size:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Text(
-                      'for men',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                ),
-                const Spacer(),
-                Row(
-                  children: [
-                    const Text(
-                      'Color:',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.grey,
-                      ),
-                      height: 30,
-                      width: 30,
-                    ),
-                  ],
-                )
-              ],
-            ),
           ),
           const SizedBox(
             height: 30,
@@ -138,7 +93,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   ),
                   Text(
                     widget.productPrice,
-                    style: const TextStyle(fontSize: 20),
+                    style: const TextStyle(fontSize: 20, color: Colors.blue),
                   ),
                   const Text(
                     'Rate : ',
@@ -156,30 +111,200 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             ),
           ),
           const SizedBox(
-            height: 90,
+            height: 20,
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            // ignore: deprecated_member_use
-            child: FlatButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GestureDetector(
+                onTap: () {
+                  addToCard(widget.productId);
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  margin: const EdgeInsets.all(15.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "Add To Card",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
-              color: Colors.blue,
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CardScreen()));
-              },
-              child: const Text(
-                'add to card',
-                style: TextStyle(fontSize: 20, color: Colors.white),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CardScreen(),
+                      ));
+                },
+                child: Container(
+                  alignment: Alignment.center,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(20)),
+                  margin: const EdgeInsets.all(15.0),
+                  child: const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: Text(
+                      "Go to Checkout",
+                      style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           )
         ],
       ),
     );
+  }
+
+  addToCard(String productId) async {
+    await CacheHelper.init();
+    // ignore: non_constant_identifier_names
+    var access_token = CacheHelper.getData(key: 'access_token');
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
+    var request = http.Request('POST',
+        Uri.parse('https://oshops-app.herokuapp.com/addProductToWishlist'));
+    request.body = json.encode({"productId": "$productId"});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Result'),
+          content: const Text('Successfully Added'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CardScreen(),
+                      ));
+                },
+                child: const Text('Go To Card')),
+            ElevatedButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Result'),
+                      content: const Text('Are You Sure!!'),
+                      actions: [
+                        ElevatedButton(
+                            onPressed: () {
+                              removeFromCard(productId);
+                            },
+                            child: const Text('Yes')),
+                        ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('No'))
+                      ],
+                    ),
+                  );
+                },
+                child: const Text('Remove'))
+          ],
+        ),
+      );
+    } else {
+      print(response.reasonPhrase);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Result'),
+          content: const Text('Faild ... Please Try Again'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back')),
+          ],
+        ),
+      );
+    }
+  }
+
+  removeFromCard(String productId) async {
+    await CacheHelper.init();
+    // ignore: non_constant_identifier_names
+    var access_token = CacheHelper.getData(key: 'access_token');
+
+    print(access_token);
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json; charset=utf-8'
+    };
+    var request = http.Request(
+        'DELETE',
+        Uri.parse(
+            'https://oshops-app.herokuapp.com/removeProductFromWishlist'));
+    request.body = json.encode({"productId": "$productId"});
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Result'),
+          content: const Text('Successfully Deleted ....'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back')),
+          ],
+        ),
+      );
+    } else {
+      print(response.reasonPhrase);
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Result'),
+          content: const Text('Faild ... Please Try Again'),
+          actions: [
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('Go Back')),
+          ],
+        ),
+      );
+    }
   }
 }

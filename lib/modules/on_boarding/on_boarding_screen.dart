@@ -1,11 +1,10 @@
-// ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors, unnecessary_string_interpolations, avoid_print
+// ignore_for_file: use_key_in_widget_constructors, prefer_const_literals_to_create_immutables, prefer_const_constructors, unnecessary_string_interpolations, avoid_print, no_logic_in_create_state, deprecated_member_use
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/modules/login/log_in_form.dart';
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
-import 'package:shop_app/screens/products/bottom_nav.dart';
-import 'package:shop_app/screens/shopping.dart';
+
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

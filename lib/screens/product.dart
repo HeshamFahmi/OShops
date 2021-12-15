@@ -1,14 +1,15 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_print
+// ignore_for_file: use_key_in_widget_constructors, avoid_print, unnecessary_string_interpolations
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/constants.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
 import 'package:shop_app/screens/product_Details_screen.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:http/http.dart' as http;
+
+import 'card.dart';
 
 class ProductScreen extends StatefulWidget {
   final String? storeId;
@@ -46,7 +47,7 @@ class _ProductScreenState extends State<ProductScreen> {
           ),
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => BottomNavigationScreen(),
@@ -76,7 +77,8 @@ class _ProductScreenState extends State<ProductScreen> {
                               .toString(),
                           productModel!.allProducts![index].price.toString(),
                           productModel!.allProducts![index].rate.toString(),
-                          index),
+                          index,
+                          productModel!.allProducts![index].sId.toString()),
                     ),
                   ]);
                 })),
@@ -84,17 +86,19 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   Widget buildColumn(BuildContext context, String? name, String? imageUrl,
-      String? price, String? rate, int index) {
+      String? price, String? rate, int index, String? id) {
     return InkWell(
       onTap: () {
         Navigator.push(
             context,
             MaterialPageRoute(
                 builder: (context) => ProductDetailsScreen(
-                    productName: name!,
-                    productImageUrl: imageUrl!,
-                    productPrice: price!,
-                    productRate: rate!)));
+                      productName: name!,
+                      productImageUrl: imageUrl!,
+                      productPrice: price!,
+                      productRate: rate!,
+                      productId: id!,
+                    )));
       },
       child: Column(
         children: <Widget>[
@@ -116,7 +120,7 @@ class _ProductScreenState extends State<ProductScreen> {
               ),
               Text(
                 price! + " \$",
-                style: const TextStyle(fontSize: 20, color: Colors.blueGrey),
+                style: const TextStyle(fontSize: 20, color: Colors.blue),
                 overflow: TextOverflow.ellipsis,
               )
             ],
@@ -127,7 +131,7 @@ class _ProductScreenState extends State<ProductScreen> {
             },
             child: Container(
               decoration: BoxDecoration(
-                  color: Colors.green, borderRadius: BorderRadius.circular(20)),
+                  color: Colors.blue, borderRadius: BorderRadius.circular(20)),
               margin: const EdgeInsets.all(15.0),
               child: const Padding(
                 padding: EdgeInsets.all(10.0),
@@ -173,19 +177,20 @@ class _ProductScreenState extends State<ProductScreen> {
     }
   }
 
-  addToCard(String? productId) async {
+  addToCard(String productId) async {
     await CacheHelper.init();
     // ignore: non_constant_identifier_names
     var access_token = CacheHelper.getData(key: 'access_token');
-    var headers = {'Authorization': 'Bearer $access_token'};
-
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json'
+    };
     var request = http.Request('POST',
         Uri.parse('https://oshops-app.herokuapp.com/addProductToWishlist'));
-    request.body = '''{\r\n    "productId":"${productId!}"\r\n}''';
+    request.body = json.encode({"productId": "$productId"});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
-
     if (response.statusCode == 200) {
       print(await response.stream.bytesToString());
       showDialog(
@@ -199,6 +204,15 @@ class _ProductScreenState extends State<ProductScreen> {
                   Navigator.pop(context);
                 },
                 child: const Text('Go Back')),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CardScreen(),
+                      ));
+                },
+                child: const Text('Go To Card')),
             ElevatedButton(
                 onPressed: () {
                   showDialog(
@@ -244,17 +258,21 @@ class _ProductScreenState extends State<ProductScreen> {
     }
   }
 
-  removeFromCard(String? productId) async {
+  removeFromCard(String productId) async {
     await CacheHelper.init();
     // ignore: non_constant_identifier_names
     var access_token = CacheHelper.getData(key: 'access_token');
-    var headers = {'Authorization': 'Bearer $access_token'};
+
+    print(access_token);
+    var headers = {
+      'Authorization': 'Bearer $access_token',
+      'Content-Type': 'application/json; charset=utf-8'
+    };
     var request = http.Request(
         'DELETE',
         Uri.parse(
             'https://oshops-app.herokuapp.com/removeProductFromWishlist'));
-    request.body = '''{\r\n    "productId":"${productId!}"\r\n}''';
-
+    request.body = json.encode({"productId": "$productId"});
     request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();

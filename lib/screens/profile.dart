@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, deprecated_member_use
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, sized_box_for_whitespace, deprecated_member_use, non_constant_identifier_names, avoid_print, prefer_typing_uninitialized_variables, prefer_if_null_operators
 
 import 'dart:io';
 
@@ -153,15 +153,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Column(
         children: [
           Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(top: 40, left: 20, bottom: 20),
+                padding: const EdgeInsets.only(top: 80, bottom: 20),
                 child: GestureDetector(
                   onTap: showCameraDialog,
                   child: Container(
-                    width: size.width * 0.29,
-                    height: size.width * 0.29,
+                    width: size.width * 0.3,
+                    height: size.width * 0.3,
                     decoration: BoxDecoration(
                       border: Border.all(
                           width: 9,
@@ -194,61 +194,66 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   } else if (state is UserInfoUnLoadedState) {
                     ToastConstant.showToast(context, state.error);
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.people,
-                            size: 15,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            firstName == null ? "Name" : "$firstName $lastName",
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 100),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.people,
+                              size: 15,
+                              color: Colors.blue,
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.email,
-                            size: 15,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            email == null ? "email" : email,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.place,
-                            size: 15,
-                            color: Colors.blue,
-                          ),
-                          const SizedBox(width: 8),
-                          Text(
-                            address == null ? "address" : address,
-                            style: TextStyle(fontSize: 18),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 8),
+                            Text(
+                              firstName == null
+                                  ? "Name"
+                                  : "$firstName $lastName",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.email,
+                              size: 15,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              email == null ? "email" : email,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.place,
+                              size: 15,
+                              color: Colors.blue,
+                            ),
+                            const SizedBox(width: 8),
+                            Text(
+                              address == null ? "address" : address,
+                              style: TextStyle(fontSize: 15),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   );
                 },
               ),
@@ -258,7 +263,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             height: 20,
           ),
           buildGestureDetector(Icons.edit, 'Edit Profile', () {
-            Navigator.pushReplacement(
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => EditProfile(),
@@ -268,9 +273,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 20,
           ),
-          buildGestureDetector(Icons.location_on_outlined, 'Shopping Address',
-              () {
-            Navigator.pushReplacement(
+          buildGestureDetector(Icons.location_on_outlined, 'Address', () {
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => ShoppingAddress(),
@@ -280,8 +284,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           SizedBox(
             height: 20,
           ),
-          buildGestureDetector(Icons.favorite, 'WishList', () {
-            Navigator.pushReplacement(
+          buildGestureDetector(Icons.shopping_cart, 'Card', () {
+            Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => CardScreen(),

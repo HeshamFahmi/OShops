@@ -7,6 +7,7 @@ import 'package:shop_app/models/categories_model.dart';
 import 'package:shop_app/models/product_model.dart';
 import 'package:shop_app/models/stores_model.dart';
 import 'package:shop_app/models/user_model.dart';
+import 'package:shop_app/screens/card.dart';
 import 'package:shop_app/screens/profile.dart';
 import 'package:shop_app/screens/shopping.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
@@ -18,7 +19,11 @@ class ShopCubit extends Cubit<ShopStates> {
 
   int currentIndex = 0;
 
-  List<Widget> bottomsScreens = [ShoppingScreen(), ProfileScreen()];
+  List<Widget> bottomsScreens = [
+    ShoppingScreen(),
+    ProfileScreen(),
+    CardScreen()
+  ];
 
   void changeBottom(int index) {
     currentIndex = index;

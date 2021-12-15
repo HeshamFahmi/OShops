@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_declarations
+
 const String oShopsBaseUrl = "https://oshops-app.herokuapp.com";
 final String loginEndPoint = "/userSignIn";
 final String registerEndPoint = "/signUp";

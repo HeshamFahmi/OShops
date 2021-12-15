@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables
+
 part of 'api_services_cubit.dart';
 
 @immutable

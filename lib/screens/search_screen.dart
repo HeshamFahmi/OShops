@@ -1,6 +1,9 @@
+// ignore_for_file: prefer_const_constructors, unnecessary_new, non_constant_identifier_names, avoid_print
+
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/product_Details_screen.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,6 +19,7 @@ class _SearchScreenState extends State<SearchScreen> {
   TextEditingController textEditingController = new TextEditingController();
   bool loading = false;
   searchItem(String param) async {
+    products.clear();
     loading = true;
     products.clear();
     await CacheHelper.init();
@@ -83,19 +87,14 @@ class _SearchScreenState extends State<SearchScreen> {
               SizedBox(height: 20),
               TextField(
                 controller: textEditingController,
+                onChanged: (value) {
+                  searchItem(value);
+                },
                 decoration: InputDecoration(
                   hintText: "Please Write What you want",
                   prefixIcon: GestureDetector(
                       onTap: () async {
                         searchItem(textEditingController.text.toString());
-                        // await CacheHelper.init();
-                        // var access_token =
-                        //     CacheHelper.getData(key: 'access_token');
-                        // print("the token is $access_token");
-                        // ApiServicesCubit.getInstance(context).searchItem(
-                        //   token: access_token,
-                        //   param: item!,
-                        // );
                       },
                       child: Icon(Icons.search)),
                 ),
@@ -126,137 +125,89 @@ class _SearchScreenState extends State<SearchScreen> {
                           physics: BouncingScrollPhysics(),
                           itemCount: products.length,
                           itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.all(10.0),
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                color: Colors.green,
-                                border: Border.all(
-                                  color: Colors.transparent,
-                                ),
-                                borderRadius: BorderRadius.circular(20.0),
-                              ),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                      child: Image.network(
-                                        products[index]["productImageURL"],
-                                        height: 100,
-                                        width: 100,
-                                      ),
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ProductDetailsScreen(
+                                              productName: products[index]
+                                                      ["productName"]
+                                                  .toString(),
+                                              productImageUrl: products[index]
+                                                      ["productImageURL"]
+                                                  .toString(),
+                                              productPrice: products[index]
+                                                      ["price"]
+                                                  .toString(),
+                                              productRate: products[index]
+                                                      ["rate"]
+                                                  .toString(),
+                                              productId: products[index]["_id"]
+                                                  .toString(),
+                                            )));
+                              },
+                              child: Card(
+                                child: Container(
+                                  margin: EdgeInsets.all(10.0),
+                                  width: double.infinity,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    border: Border.all(
+                                      color: Colors.grey,
                                     ),
+                                    borderRadius: BorderRadius.circular(20.0),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                  child: Row(
                                     children: [
-                                      Text(
-                                        products[index]["productName"],
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                      Padding(
+                                        padding: const EdgeInsets.all(10.0),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                          child: Image.network(
+                                            products[index]["productImageURL"],
+                                            height: 100,
+                                            width: 100,
+                                          ),
+                                        ),
                                       ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                      Text(
-                                        products[index]["price"].toString(),
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              products[index]["productName"],
+                                              style: TextStyle(
+                                                  color: Colors.blue[900],
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold,
+                                                  overflow:
+                                                      TextOverflow.ellipsis),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              products[index]["price"]
+                                                  .toString(),
+                                              style: TextStyle(
+                                                  color: Colors.blue,
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
                             );
                           },
                         )
-
-              // Container(
-              //   height: 100,
-              //   width: 100,
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //     children: [
-              //       TextField(
-              //         decoration: InputDecoration(
-              //           hintText: 'search about your items',
-              //           prefixIcon: Icon(
-              //             Icons.search,
-              //             color: Colors.black,
-              //             size: 18,
-              //           ),
-              //           enabledBorder: OutlineInputBorder(
-              //             borderRadius: BorderRadius.circular(5.0),
-              //             borderSide: BorderSide(
-              //               color: Colors.grey,
-              //               width: 0.4,
-              //             ),
-              //           ),
-              //           focusedBorder: OutlineInputBorder(
-              //             borderRadius: BorderRadius.circular(5.0),
-              //             borderSide: BorderSide(
-              //               color: Colors.grey,
-              //               width: 0.4,
-              //             ),
-              //           ),
-              //           border: OutlineInputBorder(
-              //             borderRadius: BorderRadius.circular(5.0),
-              //             borderSide: BorderSide(
-              //               color: Colors.grey,
-              //               width: 0.4,
-              //             ),
-              //           ),
-              //         ),
-              //         onChanged: (value) {
-              //           setState(() {
-              //             item = value.toString();
-              //           });
-              //         },
-              //       ),
-              //       InkWell(
-              //         onTap: () async {
-              //           await CacheHelper.init();
-              //           var access_token =
-              //               CacheHelper.getData(key: 'access_token');
-              //           print("the token is $access_token");
-              //           ApiServicesCubit.getInstance(context).searchItem(
-              //             token: access_token,
-              //             param: item!,
-              //           );
-              //         },
-              //         child: BlocBuilder<ApiServicesCubit, ApiServicesStates>(
-              //           builder: (context, state) {
-              //             if (state is SearchItemFoundState) {
-              //               products = state.items;
-              //               products
-              //                   .sort(); // sort items from shotest to longest
-              //             } else if (state is SearchItemNotFoundState) {
-              //               ToastConstant.showToast(context, state.error);
-              //             }
-              //             return Icon(
-              //               Icons.search,
-              //               color: Colors.white,
-              //               size: 20,
-              //             );
-              //           },
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              ///**
-              /// هشام هنا هتعمل ليست فيو ويدجيت وتنادي فيها علي اللسته
-              ///  بعد معملتلها سورت هتلاقيها فوق سطر 109
-              /// وبعد كدا هترسم شكل للداتا بس دا كل الي هتعمله هنا
-              /// */
             ],
           ),
         ),

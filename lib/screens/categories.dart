@@ -1,12 +1,11 @@
-// ignore_for_file: use_key_in_widget_constructors, avoid_print
+// ignore_for_file: use_key_in_widget_constructors, avoid_print, non_constant_identifier_names
 
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shop_app/constants/strings.dart';
 import 'package:shop_app/models/categories_model.dart';
-import 'package:shop_app/models/constants.dart';
-import 'package:shop_app/models/product_model.dart';
+
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
 import 'package:shop_app/screens/product.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
@@ -26,6 +25,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   bool loadingCategories = true;
   @override
   void initState() {
+    // ignore: todo
     // TODO: implement initState
     getStoriesCategories(widget.storeId!);
     super.initState();
@@ -45,7 +45,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ),
           leading: IconButton(
             onPressed: () {
-              Navigator.pushReplacement(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (BuildContext context) => BottomNavigationScreen(),
@@ -93,7 +93,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       children: [
         GestureDetector(
           onTap: () {
-            Navigator.pushReplacement(
+            Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ProductScreen(

@@ -1,19 +1,13 @@
-// ignore_for_file: prefer_const_constructors, avoid_print, must_be_immutable
+// ignore_for_file: prefer_const_constructors, avoid_print, must_be_immutable, prefer_const_literals_to_create_immutables, deprecated_member_use
 import 'package:buildcondition/buildcondition.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shop_app/models/constants.dart';
-import 'package:shop_app/modules/login/cubit/cubit.dart';
-import 'package:shop_app/modules/login/cubit/states.dart';
+
 import 'package:shop_app/modules/login/log_in_form.dart';
 import 'package:shop_app/modules/signup/cubit/cubit.dart';
-import 'package:shop_app/modules/signup/sign_up_form.dart';
-import 'package:shop_app/screens/bottom_navigator_bar.dart';
-import 'package:shop_app/screens/products/bottom_nav.dart';
-import 'package:shop_app/screens/shopping.dart';
-import 'package:shop_app/shared/network/local/cache_helper.dart';
 
 import 'cubit/states.dart';
 
@@ -41,7 +35,7 @@ class SignUpScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BottomNavigationScreen(),
+                  builder: (context) => LoginScreen(token),
                 ),
               );
               // CacheHelper.saveData(
@@ -162,7 +156,7 @@ class SignUpScreen extends StatelessWidget {
                           alignment: Alignment.bottomLeft,
                           child: IconButton(
                             onPressed: () {
-                              Navigator.pushReplacement(
+                              Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => LoginScreen(token),
@@ -181,9 +175,10 @@ class SignUpScreen extends StatelessWidget {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Sign Up',
+                                      'Register',
                                       style: TextStyle(
                                           fontSize: 30,
+                                          color: Colors.blue,
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -315,7 +310,7 @@ class SignUpScreen extends StatelessWidget {
                                       }
                                     },
                                     child: Text(
-                                      'sign up'.toUpperCase(),
+                                      'register'.toUpperCase(),
                                       style: TextStyle(color: Colors.white),
                                     ),
                                   ),
@@ -341,80 +336,3 @@ class SignUpScreen extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-// TextFormField(
-// controller: _firstNameController,
-// validator: (value) {
-// if (value!.isEmpty) {
-// return 'Please enter your first name';
-// }
-// },
-// keyboardType: TextInputType.name,
-// decoration: InputDecoration(
-// label: Text(
-// 'First name',
-// style: TextStyle(color: login_bg),
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.symmetric(
-// vertical: defpaultPadding),
-// child: TextFormField(
-// controller: _lastNameController,
-// validator: (value) {
-// if (value!.isEmpty) {
-// return 'Please enter your last name';
-// }
-// },
-// keyboardType: TextInputType.name,
-// decoration: InputDecoration(
-// label: Text(
-// 'Last name',
-// style: TextStyle(color: login_bg),
-// ),
-// ),
-// ),
-// ),
-// TextFormField(
-// controller: _emailController,
-// validator: (value) {
-// if (value!.isEmpty) {
-// return 'Please enter your email';
-// }
-// },
-// keyboardType: TextInputType.emailAddress,
-// decoration: InputDecoration(
-// label: Text(
-// 'Email',
-// style: TextStyle(color: login_bg),
-// ),
-// ),
-// ),
-// Padding(
-// padding: const EdgeInsets.symmetric(
-// vertical: defpaultPadding),
-// child: TextFormField(
-// controller: _passwordController,
-// validator: (value) {
-// if (value!.isEmpty) {
-// return 'Password is too short';
-// }
-// },
-// keyboardType:
-// TextInputType.visiblePassword,
-// decoration: InputDecoration(
-// label: Text(
-// 'Password',
-// style: TextStyle(color: login_bg),
-// ),
-// errorBorder: UnderlineInputBorder(
-// borderSide:
-// BorderSide(color: Colors.red)),
-// ),
-// ),
-// ),

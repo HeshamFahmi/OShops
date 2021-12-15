@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_returning_null_for_void, prefer_const_constructors, use_key_in_widget_constructors
+// ignore_for_file: avoid_returning_null_for_void, prefer_const_constructors, use_key_in_widget_constructors, prefer_final_fields, prefer_const_literals_to_create_immutables, deprecated_member_use, non_constant_identifier_names, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -63,7 +63,7 @@ class _ShoppingAddressState extends State<ShoppingAddress> {
                               Text(
                                 'Add your shopping address',
                                 style: TextStyle(
-                                    fontSize: 25, fontWeight: FontWeight.bold),
+                                    fontSize: 15, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),

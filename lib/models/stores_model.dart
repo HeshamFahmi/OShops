@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_new
+
 class StoriesModel {
   int? status;
   String? message;
