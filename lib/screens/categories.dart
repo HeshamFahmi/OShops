@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:shop_app/constants/strings.dart';
 import 'package:shop_app/models/categories_model.dart';
 
-import 'package:shop_app/screens/bottom_navigator_bar.dart';
 import 'package:shop_app/screens/product.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:http/http.dart' as http;
@@ -45,12 +44,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ),
           leading: IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (BuildContext context) => BottomNavigationScreen(),
-                ),
-              );
+              Navigator.of(context).pop();
             },
             icon: const Icon(
               Icons.arrow_back_ios,

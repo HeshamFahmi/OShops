@@ -2,8 +2,8 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shop_app/modules/login/log_in_form.dart';
 import 'package:shop_app/screens/bottom_navigator_bar.dart';
+import 'package:shop_app/screens/fakeData/fakeHomePage.dart';
 
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -55,7 +55,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                token == null ? LoginScreen(token) : BottomNavigationScreen(),
+                token == null ? FakeHomePage() : BottomNavigationScreen(),
           ),
           (route) => false,
         );
@@ -133,7 +133,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                         ? Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(token),
+                              builder: (context) => FakeHomePage(),
                             ),
                             (route) => false,
                           )
