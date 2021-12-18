@@ -290,13 +290,13 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   }
 
   getAllStories() async {
-    await CacheHelper.init();
-    var access_token = CacheHelper.getData(key: 'access_token');
-    var headers = {'Authorization': 'Bearer $access_token'};
+    // await CacheHelper.init();
+    // var access_token = CacheHelper.getData(key: 'access_token');
+    // var headers = {'Authorization': 'Bearer $access_token'};
     var request = http.Request(
         'GET', Uri.parse('https://oshops-app.herokuapp.com/getAllStores'));
 
-    request.headers.addAll(headers);
+    // request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
@@ -312,15 +312,15 @@ class _ShoppingScreenState extends State<ShoppingScreen> {
   }
 
   getAllProducts() async {
-    await CacheHelper.init();
-    var access_token = CacheHelper.getData(key: 'access_token');
-    var headers = {'Authorization': 'Bearer $access_token'};
+    // await CacheHelper.init();
+    // var access_token = CacheHelper.getData(key: 'access_token');
+    // var headers = {'Authorization': 'Bearer $access_token'};
     var request = http.Request(
         'GET',
         Uri.parse(
             'https://oshops-app.herokuapp.com/getAllProducts?page=1&size=4'));
 
-    request.headers.addAll(headers);
+    // request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 

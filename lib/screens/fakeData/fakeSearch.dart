@@ -3,18 +3,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:shop_app/screens/fakeData/fakeProductDetails.dart';
 import 'package:shop_app/screens/product_Details_screen.dart';
 import 'package:shop_app/shared/network/local/cache_helper.dart';
 import 'package:http/http.dart' as http;
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key? key}) : super(key: key);
+class FakeSearchScreen extends StatefulWidget {
+  const FakeSearchScreen({Key? key}) : super(key: key);
 
   @override
-  _SearchScreenState createState() => _SearchScreenState();
+  _FakeSearchScreenState createState() => _FakeSearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _FakeSearchScreenState extends State<FakeSearchScreen> {
   List<Map<String, dynamic>> products = [];
   TextEditingController textEditingController = new TextEditingController();
   bool loading = false;
@@ -131,7 +132,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            ProductDetailsScreen(
+                                            FakeProductDetailsScreen(
                                               productName: products[index]
                                                       ["productName"]
                                                   .toString(),
@@ -143,8 +144,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                   .toString(),
                                               productRate: products[index]
                                                       ["rate"]
-                                                  .toString(),
-                                              productId: products[index]["_id"]
                                                   .toString(),
                                             )));
                               },

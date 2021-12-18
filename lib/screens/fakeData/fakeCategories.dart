@@ -1,23 +1,33 @@
 // ignore_for_file: use_key_in_widget_constructors, avoid_print, non_constant_identifier_names
 
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-import 'fakeProducts.dart';
+import 'package:flutter/material.dart';
+import 'package:shop_app/constants/strings.dart';
+import 'package:shop_app/models/categories_model.dart';
+import 'package:shop_app/screens/fakeData/fakeProducts.dart';
+
+import 'package:http/http.dart' as http;
 
 class FakeCategoriesScreen extends StatefulWidget {
+  final String? storeId;
+
+  const FakeCategoriesScreen({Key? key, this.storeId}) : super(key: key);
+
   @override
   State<FakeCategoriesScreen> createState() => _FakeCategoriesScreenState();
 }
 
 class _FakeCategoriesScreenState extends State<FakeCategoriesScreen> {
-  var categoriesName = ["Groceries & more", "Electronics", "Makeup", "Cars"];
-
-  var categoriesImages = [
-    "https://www.safefood.net/getmedia/bdd2f336-d2a3-455e-899a-621b084d38cc/shopping-trolley.jpg?w=1200&h=675&ext=.jpg&width=1360&resizemode=force",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKI1KbR09pnz2E_V27LopU8Rl4EN1J4QNlvQ&usqp=CAU",
-    "https://images-na.ssl-images-amazon.com/images/I/51O1IDYXubL.jpg",
-    "https://www.motortrend.com/uploads/sites/5/2019/12/MotorTrend-Most-Important-Cars-of-the-Decade.jpg?fit=around%7C875:492"
-  ];
+  CategoriesModel? categoriesModel;
+  bool loadingCategories = true;
+  @override
+  void initState() {
+    // ignore: todo
+    // TODO: implement initState
+    getStoriesCategories(widget.storeId!);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,20 +51,32 @@ class _FakeCategoriesScreenState extends State<FakeCategoriesScreen> {
             ),
           ),
         ),
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              physics: const BouncingScrollPhysics(),
-              children: List.generate(
-                categoriesName.length,
-                (index) {
-                  return buildColumn(context, categoriesName[index],
-                      categoriesImages[index], index);
-                },
-              )),
-        ));
+        body: loadingCategories
+            ? const Center(child: CircularProgressIndicator())
+            : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: GridView.count(
+                    shrinkWrap: true,
+                    crossAxisCount: 2,
+                    physics: const BouncingScrollPhysics(),
+                    children: List.generate(
+                      categoriesModel!.storeCategories!.length,
+                      (index) {
+                        return buildColumn(
+                            context,
+                            categoriesModel!
+                                .storeCategories![index].categoryName,
+                            oShopsBaseUrl +
+                                "/" +
+                                categoriesModel!
+                                    .storeCategories![index].categoryImageURL!
+                                    .replaceAll("\\", "/")
+                                    .replaceAll(" ", "%20")
+                                    .toString(),
+                            index);
+                      },
+                    )),
+              ));
   }
 
   Column buildColumn(
@@ -67,7 +89,11 @@ class _FakeCategoriesScreenState extends State<FakeCategoriesScreen> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => FakeProductScreen(),
+                  builder: (context) => FakeProductScreen(
+                    storeId: widget.storeId,
+                    categoryId: categoriesModel!.storeCategories![index!].sId
+                        .toString(),
+                  ),
                 ));
           },
           child: ClipRRect(
@@ -85,5 +111,29 @@ class _FakeCategoriesScreenState extends State<FakeCategoriesScreen> {
             overflow: TextOverflow.ellipsis),
       ],
     );
+  }
+
+  getStoriesCategories(String storeId) async {
+    // await CacheHelper.init();
+    // var access_token = CacheHelper.getData(key: 'access_token');
+    // var headers = {'Authorization': 'Bearer $access_token'};
+    var request = http.Request(
+        'GET',
+        Uri.parse(
+            'https://oshops-app.herokuapp.com/getStoreCategories/$storeId?page=1&size=1'));
+
+    // request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      categoriesModel = CategoriesModel.fromJson(
+          jsonDecode(await response.stream.bytesToString()));
+      setState(() {
+        loadingCategories = false;
+      });
+    } else {
+      print(response.reasonPhrase);
+    }
   }
 }

@@ -151,16 +151,16 @@ class _ProductScreenState extends State<ProductScreen> {
   }
 
   getStoriesCategoriesProducts() async {
-    await CacheHelper.init();
-    // ignore: non_constant_identifier_names
-    var access_token = CacheHelper.getData(key: 'access_token');
-    var headers = {'Authorization': 'Bearer $access_token'};
+    // await CacheHelper.init();
+    // // ignore: non_constant_identifier_names
+    // var access_token = CacheHelper.getData(key: 'access_token');
+    // var headers = {'Authorization': 'Bearer $access_token'};
     var request = http.Request(
         'GET',
         Uri.parse(
             "https://oshops-app.herokuapp.com/productsByStoreAndCategory/${widget.storeId}/${widget.categoryId}?page=1&size=1"));
 
-    request.headers.addAll(headers);
+    // request.headers.addAll(headers);
 
     http.StreamedResponse response = await request.send();
 
